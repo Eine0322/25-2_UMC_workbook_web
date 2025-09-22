@@ -1,4 +1,3 @@
-// 필요한 HTML 요소들을 선택합니다.
 const form = document.querySelector(".todo-container__form") as HTMLFormElement;
 const input = document.querySelector(
   ".todo-container__input"
@@ -11,39 +10,35 @@ const completedList = document.querySelector(
 // 새 할 일 항목을 생성하는 함수
 function createTodoItem(taskText: string): HTMLLIElement {
   const li = document.createElement("li");
-  li.innerHTML = `
-        <span>${taskText}</span>
-        <button class="action-button complete-button">완료</button>
-    `;
 
-  // '완료' 버튼에 이벤트 리스너를 추가합니다.
-  li.querySelector(".complete-button")?.addEventListener("click", () => {
-    completeTask(li, taskText);
-  });
+  const span = document.createElement("span");
+  span.textContent = taskText;
 
+  const completeBtn = document.createElement("button");
+  completeBtn.className = "complete-button action-button";
+  completeBtn.type = "button";
+  completeBtn.textContent = "완료";
+  completeBtn.addEventListener("click", () => completeTask(li, taskText));
+
+  li.append(span, completeBtn);
   return li;
 }
 
-// 할 일을 완료된 목록으로 이동시키는 함수
+// 완료된 할 일 목록으로 이동하는 함수
 function completeTask(item: HTMLLIElement, taskText: string) {
-  // 기존 항목을 DOM에서 제거합니다.
   item.remove();
 
-  // 완료된 항목을 위한 새로운 리스트 아이템을 생성합니다.
   const completedItem = document.createElement("li");
-  completedItem.innerHTML = `
-        <span>${taskText}</span>
-        <button class="action-button delete-button">삭제</button>
-    `;
+  const span = document.createElement("span");
+  span.textContent = taskText;
 
-  // '삭제' 버튼에 이벤트 리스너를 추가합니다.
-  completedItem
-    .querySelector(".delete-button")
-    ?.addEventListener("click", () => {
-      deleteTask(completedItem);
-    });
+  const deleteBtn = document.createElement("button");
+  deleteBtn.className = "delete-button action-button";
+  deleteBtn.type = "button";
+  deleteBtn.textContent = "삭제";
+  deleteBtn.addEventListener("click", () => deleteTask(completedItem));
 
-  // 완료된 목록에 추가합니다.
+  completedItem.append(span, deleteBtn);
   completedList.appendChild(completedItem);
 }
 
