@@ -1,6 +1,6 @@
 import { createContext, useState, ReactNode, useContext } from 'react'
 
-type Task = {
+export type Task = {
   id: number
   text: string
 }

@@ -1,6 +1,7 @@
 import './App.css'
 import { useState } from 'react'
 import { useTasks } from './context/TaskProvider'
+import { ListItem } from './components/listItem/ListItem'
 
 export default function App() {
   const { todoTasks, doneTasks, addTodo, completeTask, deleteTask } = useTasks()
@@ -36,16 +37,12 @@ export default function App() {
           <h2 className='render-container__title'>할 일</h2>
           <ul id='todo-list' className='render-container__list'>
             {todoTasks.map((task) => (
-              <li key={task.id} className='render-container__item'>
-                {task.text}
-                <button
-                  className='render-container__item-button'
-                  style={{ backgroundColor: 'green' }}
-                  onClick={() => completeTask(task)}
-                >
-                  완료
-                </button>
-              </li>
+              <ListItem
+                key={task.id}
+                task={task}
+                isDone={false}
+                onClick={() => completeTask(task)}
+              />
             ))}
           </ul>
         </div>
@@ -53,16 +50,7 @@ export default function App() {
           <h2 className='render-container__title'>완료</h2>
           <ul id='done-list' className='render-container__list'>
             {doneTasks.map((task) => (
-              <li key={task.id} className='render-container__item'>
-                {task.text}
-                <button
-                  className='render-container__item-button'
-                  style={{ backgroundColor: 'red' }}
-                  onClick={() => deleteTask(task)}
-                >
-                  삭제
-                </button>
-              </li>
+              <ListItem key={task.id} task={task} isDone={true} onClick={() => deleteTask(task)} />
             ))}
           </ul>
         </div>
