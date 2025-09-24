@@ -1,37 +1,16 @@
 import './App.css'
 import { useState } from 'react'
-
-type Task = {
-  id: number
-  text: string
-}
+import { useTasks } from './context/TaskProvider'
 
 export default function App() {
-  const [todoTasks, setTodoTasks] = useState<Task[]>([])
-  const [doneTasks, setDoneTasks] = useState<Task[]>([])
+  const { todoTasks, doneTasks, addTodo, completeTask, deleteTask } = useTasks()
   const [inputValue, setInputValue] = useState('')
-
-  // 할 일 추가
-  const addTodo = (text: string) => {
-    setTodoTasks([...todoTasks, { id: Date.now(), text }])
-    setInputValue('')
-  }
-
-  // 완료 처리
-  const completeTask = (task: Task) => {
-    setTodoTasks(todoTasks.filter((t) => t.id !== task.id))
-    setDoneTasks([...doneTasks, task])
-  }
-
-  // 삭제 처리
-  const deleteTask = (task: Task) => {
-    setDoneTasks(doneTasks.filter((t) => t.id !== task.id))
-  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (inputValue.trim()) {
       addTodo(inputValue.trim())
+      setInputValue('')
     }
   }
 
