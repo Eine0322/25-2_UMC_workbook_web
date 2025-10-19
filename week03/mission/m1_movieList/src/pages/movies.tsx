@@ -5,6 +5,7 @@ import axios from 'axios'
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState<Movie[]>([])
+  const [hoveredMovieId, setHoveredMovieId] = useState<number | null>(null)
 
   console.log(movies)
 
@@ -26,11 +27,25 @@ const MoviesPage = () => {
   return (
     <ul className='grid grid-cols-6 gap-2 p-4 max-w-270 mx-auto'>
       {movies.map((movie) => (
-        <li key={movie.id}>
+        <li
+          key={movie.id}
+          className='relative cursor-pointer overflow-hidden rounded-xl'
+          onMouseEnter={() => setHoveredMovieId(movie.id)}
+          onMouseLeave={() => setHoveredMovieId(null)}
+        >
           <img
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            className='w-full rounded-xl'
-          ></img>
+            className={`w-full rounded-xl transition-all ${
+              hoveredMovieId === movie.id ? 'blur-xs' : ''
+            }`}
+          />
+
+          {hoveredMovieId === movie.id && (
+            <div className='absolute inset-0 flex flex-col justify-center items-center p-4 text-white text-center rounded-xl opacity-0 transition-opacity duration-300 hover:opacity-100'>
+              <h3 className='text-lg font-bold mb-2'>{movie.title}</h3>
+              <p className='text-sm line-clamp-4'>{movie.overview}</p>
+            </div>
+          )}
         </li>
       ))}
     </ul>
